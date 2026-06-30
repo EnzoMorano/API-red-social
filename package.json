@@ -1,0 +1,38 @@
+{
+  "name": "anti-social-relational-tp-crearnombre-req-res",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "seed": "sequelize-cli db:seed:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EP-UnaHur-2026C1/anti-social-relational-tp-crearnombre-req-res.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/EP-UnaHur-2026C1/anti-social-relational-tp-crearnombre-req-res/issues"
+  },
+  "homepage": "https://github.com/EP-UnaHur-2026C1/anti-social-relational-tp-crearnombre-req-res#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "joi": "^18.2.1",
+    "mysql2": "^3.22.5",
+    "pg": "^8.21.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "sequelize-cli": "^6.6.5"
+  }
+}
