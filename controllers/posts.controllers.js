@@ -8,12 +8,17 @@ const createPost = async (req, res) => {
     const { descripcion } = req.body;
     const usuarioEncontrado = req.usuario;
 
-    // Ahora que tenemos el usuario real, usamos su ID numérico verdadero (usuarioEncontrado.id)
     const nuevoPost = await Post.create({
       descripcion: descripcion,
       fecha: new Date(),
       userId: usuarioEncontrado.id,
     });
+
+    if (req.tags && req.tags.length > 0) {
+      await nuevoPost.addTags(req.tags);
+      const tags = await nuevoPost.getTags({ through: { attributes: [] } });
+      nuevoPost.dataValues.tags = tags;
+    }
 
     return res.status(201).json(nuevoPost);
   } catch (error) {
@@ -172,6 +177,26 @@ const deletePost = async (req, res) => {
   }
 };
 
+const addTagToPost = async (req, res) => {
+  try {
+    await req.post.addTag(req.tag);
+    return res.status(200).json({ message: "Tag vinculado al post exitosamente" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Hubo un error al vincular el tag." });
+  }
+};
+
+const removeTagFromPost = async (req, res) => {
+  try {
+    await req.post.removeTag(req.tag);
+    return res.status(200).json({ message: "Tag desvinculado del post exitosamente" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Hubo un error al desvincular el tag." });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -179,4 +204,6 @@ module.exports = {
   deletePost,
   updatePost,
   obtenerPostByTag,
+  addTagToPost,
+  removeTagFromPost,
 };

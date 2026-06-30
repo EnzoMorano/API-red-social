@@ -2,6 +2,7 @@ const { Post, User, Post_Image, Tag, Comment } = require("../models");
 const {
   postsSchema,
   actualizarPostsSchema,
+  postTagSchema,
 } = require("../schemas/posts.schema");
 const { Op } = require("sequelize");
 
@@ -64,8 +65,36 @@ const validarPostId = async (req, res, next) => {
   next();
 };
 
+const validarTagIdEnPost = async (req, res, next) => {
+  const { error } = postTagSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+  const tag = await Tag.findByPk(req.body.tagId);
+  if (!tag) {
+    return res.status(404).json({ error: "Tag no encontrado" });
+  }
+  req.tag = tag;
+  next();
+};
+
+const validarTagsEnPost = async (req, res, next) => {
+  const { tagIds } = req.body;
+  if (!tagIds || tagIds.length === 0) return next();
+  const tags = await Tag.findAll({ where: { id: tagIds } });
+  if (tags.length !== tagIds.length) {
+    const encontrados = tags.map(t => t.id);
+    const faltantes = tagIds.filter(id => !encontrados.includes(id));
+    return res.status(404).json({ error: `Tags no encontrados: ${faltantes.join(", ")}` });
+  }
+  req.tags = tags;
+  next();
+};
+
 module.exports = {
   validarPost,
   validarPostId,
   validarActualizarPost,
+  validarTagIdEnPost,
+  validarTagsEnPost,
 };

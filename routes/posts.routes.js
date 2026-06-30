@@ -6,6 +6,8 @@ const {
   validarPostId,
   validarPost,
   validarActualizarPost,
+  validarTagIdEnPost,
+  validarTagsEnPost,
 } = require("../middlewares/validarPost.middleware");
 const {
   validarUsuarioNickname,
@@ -21,6 +23,8 @@ const {
   deletePost,
   updatePost,
   obtenerPostByTag,
+  addTagToPost,
+  removeTagFromPost,
 } = require("../controllers/posts.controllers");
 
 // Definimos el camino para TRAER todos los posts (GET)
@@ -33,6 +37,7 @@ router.post(
   "/",
   validarPost,
   validarUsuarioNickname,
+  validarTagsEnPost,
   postController.createPost,
 );
 
@@ -40,6 +45,10 @@ router.post(
 router.delete("/:id", validarPostId, postController.deletePost);
 
 router.get("/tag/:tagId", validarTagId, postController.obtenerPostByTag);
+
+router.post("/:id/tags", validarPostId, validarTagIdEnPost, postController.addTagToPost);
+
+router.delete("/:id/tags/:tagId", validarPostId, validarTagId, postController.removeTagFromPost);
 
 // Definimos el camino para ACTUALIZAR un post por su ID (PUT)
 router.put(

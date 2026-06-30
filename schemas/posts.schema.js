@@ -14,6 +14,12 @@ postsSchema = Joi.object({
     "string.max": "El nickname del usuario debe tener hasta 100 caracteres",
     "any.required": "El nickname del usuario es obligatorio",
   }),
+  tagIds: Joi.array().items(Joi.number().integer().positive()).optional().messages({
+    "array.base": "Los tags deben ser un array",
+    "number.base": "Cada ID de tag debe ser un número",
+    "number.integer": "Cada ID de tag debe ser un número entero",
+    "number.positive": "Cada ID de tag debe ser un número positivo",
+  }),
 });
 
 actualizarPostsSchema = Joi.object({
@@ -29,7 +35,17 @@ actualizarPostsSchema = Joi.object({
   }),
 });
 
+postTagSchema = Joi.object({
+  tagId: Joi.number().integer().positive().required().messages({
+    "number.base": "El ID del tag debe ser un número",
+    "number.integer": "El ID del tag debe ser un número entero",
+    "number.positive": "El ID del tag debe ser un número positivo",
+    "any.required": "El ID del tag es obligatorio",
+  }),
+});
+
 module.exports = {
   postsSchema,
   actualizarPostsSchema,
+  postTagSchema,
 };

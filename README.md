@@ -191,15 +191,17 @@ DB_NAME=anti_social_db
 
 ### Posts
 
-| Método   | Ruta                | Descripción                        | Middlewares                              |
-| -------- | ------------------- | ---------------------------------- | ---------------------------------------- |
-| `GET`    | `/posts`            | Ver todos los posts                | -                                        |
-| `GET`    | `/posts/:id`        | Obtener un post por ID             | `validarPostId`                          |
-| `GET`    | `/posts/:id/post`   | Obtener posts de un usuario por ID | `validarUsuarioId`                       |
-| `GET`    | `/posts/tag/:tagId` | Ver posts filtrados por tag        | `validarTagId`                           |
-| `POST`   | `/posts`            | Crear un post                      | `validarPost`, `validarUsuarioNickname`  |
-| `PUT`    | `/posts/:id`        | Actualizar un post                 | `validarPostId`, `validarActualizarPost` |
-| `DELETE` | `/posts/:id`        | Eliminar un post                   | `validarPostId`                          |
+| Método   | Ruta                  | Descripción                           | Middlewares                                                  |
+| -------- | --------------------- | ------------------------------------- | ------------------------------------------------------------ |
+| `GET`    | `/posts`              | Ver todos los posts                   | -                                                            |
+| `GET`    | `/posts/:id`          | Obtener un post por ID                | `validarPostId`                                              |
+| `GET`    | `/posts/:id/post`     | Obtener posts de un usuario por ID    | `validarUsuarioId`                                           |
+| `GET`    | `/posts/tag/:tagId`   | Ver posts filtrados por tag           | `validarTagId`                                               |
+| `POST`   | `/posts`              | Crear un post (acepta `tagIds` opcional) | `validarPost`, `validarUsuarioNickname`, `validarTagsEnPost` |
+| `PUT`    | `/posts/:id`          | Actualizar un post                    | `validarPostId`, `validarActualizarPost`                     |
+| `DELETE` | `/posts/:id`          | Eliminar un post                      | `validarPostId`                                              |
+| `POST`   | `/posts/:id/tags`     | Vincular un tag a un post             | `validarPostId`, `validarTagIdEnPost`                        |
+| `DELETE` | `/posts/:id/tags/:tagId` | Desvincular un tag de un post      | `validarPostId`, `validarTagId`                              |
 
 ### PostImage
 
