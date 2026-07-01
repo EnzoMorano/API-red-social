@@ -38,7 +38,7 @@ const validarPostId = async (req, res, next) => {
       {
         model: Post_Image,
         as: "images",
-        attributes: ["url"],
+        attributes: ["id", "URL"],
       },
       {
         model: Tag,
@@ -54,11 +54,13 @@ const validarPostId = async (req, res, next) => {
           },
         },
         required: false,
-        include: [{
-          model: User,
-          as: "user",
-          attributes: ["nickname"],
-        }],
+        include: [
+          {
+            model: User,
+            as: "user",
+            attributes: ["nickname"],
+          },
+        ],
       },
     ],
   });
@@ -88,9 +90,11 @@ const validarTagsEnPost = async (req, res, next) => {
   if (!tagIds || tagIds.length === 0) return next();
   const tags = await Tag.findAll({ where: { id: tagIds } });
   if (tags.length !== tagIds.length) {
-    const encontrados = tags.map(t => t.id);
-    const faltantes = tagIds.filter(id => !encontrados.includes(id));
-    return res.status(404).json({ error: `Tags no encontrados: ${faltantes.join(", ")}` });
+    const encontrados = tags.map((t) => t.id);
+    const faltantes = tagIds.filter((id) => !encontrados.includes(id));
+    return res
+      .status(404)
+      .json({ error: `Tags no encontrados: ${faltantes.join(", ")}` });
   }
   req.tags = tags;
   next();

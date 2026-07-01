@@ -51,7 +51,7 @@ const getAllPosts = async (req, res) => {
         {
           model: Post_Image,
           as: "images",
-          attributes: ["url"], // Trae las fotos asociadas
+          attributes: ["id", "URL"], // Trae las fotos asociadas
         },
         {
           model: Tag,
@@ -98,7 +98,7 @@ const obtenerPostByTag = async (req, res) => {
         {
           model: Post_Image,
           as: "images",
-          attributes: ["url"], // Trae las fotos asociadas
+          attributes: ["id", "URL"], // Trae las fotos asociadas
         },
         {
           model: Tag,
