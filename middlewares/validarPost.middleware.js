@@ -54,6 +54,11 @@ const validarPostId = async (req, res, next) => {
           },
         },
         required: false,
+        include: [{
+          model: User,
+          as: "user",
+          attributes: ["nickname"],
+        }],
       },
     ],
   });
