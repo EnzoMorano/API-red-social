@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "seed": "sequelize-cli db:seed:all"
+    "seed": "node -e \"const db=require('./models');const{Sequelize}=require('sequelize');(async()=>{await db.sequelize.sync({force:true});const qi=db.sequelize.getQueryInterface();await require('./seeders/20260701000001-demo-users.js').up(qi,Sequelize);await require('./seeders/20260701000002-demo-followers.js').up(qi,Sequelize);await require('./seeders/20260701000003-demo-tags.js').up(qi,Sequelize);await require('./seeders/20260701000004-demo-posts.js').up(qi,Sequelize);await require('./seeders/20260701000005-demo-post_images.js').up(qi,Sequelize);await require('./seeders/20260701000006-demo-posttags.js').up(qi,Sequelize);console.log('Seeders ejecutados');await db.sequelize.close()})().catch(e=>{console.error(e.message);process.exit(1)})\""
   },
   "repository": {
     "type": "git",

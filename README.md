@@ -68,11 +68,11 @@ El servidor se levanta en `http://localhost:3000` (o el puerto configurado en `P
 
 ## Scripts
 
-| Comando        | Descripción                                         |
-| -------------- | --------------------------------------------------- |
-| `npm start`    | Inicia el servidor con Node                         |
-| `npm run dev`  | Inicia el servidor con Nodemon (recarga automática) |
-| `npm run seed` | Ejecuta todos los seeders (datos de prueba)         |
+| Comando        | Descripción                                                         |
+| -------------- | ------------------------------------------------------------------- |
+| `npm start`    | Inicia el servidor con Node                                         |
+| `npm run dev`  | Inicia el servidor con Nodemon (recarga automática)                 |
+| `npm run seed` | Borra la BD y ejecuta todos los seeders (50 users, 100 posts, etc.) |
 
 ---
 
@@ -150,13 +150,13 @@ DB_NAME=anti_social_db
 │   ├── tag.schemas.js
 │   └── postImage.schema.js
 ├── seeders/                  # Datos de prueba
-│   ├── 20260602000001-demo-users.js
-│   ├── 20260602000002-demo-followers.js
-│   ├── 20260608194818-demo-tags.js
-│   ├── 20260609002209-demo-posts.js
-│   ├── 20260609002504-demo-post_images.js
-│   ├── 20260609003406-demo-posttags.js
-│   └── 20260609010000-demo-comments.js
+│   ├── generate-seeders.js   # Script que genera los seeders masivos
+│   ├── 20260701000001-demo-users.js
+│   ├── 20260701000002-demo-followers.js
+│   ├── 20260701000003-demo-tags.js
+│   ├── 20260701000004-demo-posts.js
+│   ├── 20260701000005-demo-post_images.js
+│   ├── 20260701000006-demo-posttags.js
 ├── utils/
 │   └── imagen.utils.js       # Utilidad para descargar imágenes por URL
 ├── images/                   # Imágenes descargadas localmente
@@ -191,17 +191,17 @@ DB_NAME=anti_social_db
 
 ### Posts
 
-| Método   | Ruta                  | Descripción                           | Middlewares                                                  |
-| -------- | --------------------- | ------------------------------------- | ------------------------------------------------------------ |
-| `GET`    | `/posts`              | Ver todos los posts                   | -                                                            |
-| `GET`    | `/posts/:id`          | Obtener un post por ID                | `validarPostId`                                              |
-| `GET`    | `/posts/:id/post`     | Obtener posts de un usuario por ID    | `validarUsuarioId`                                           |
-| `GET`    | `/posts/tag/:tagId`   | Ver posts filtrados por tag           | `validarTagId`                                               |
-| `POST`   | `/posts`              | Crear un post (acepta `tagIds` opcional) | `validarPost`, `validarUsuarioNickname`, `validarTagsEnPost` |
-| `PUT`    | `/posts/:id`          | Actualizar un post                    | `validarPostId`, `validarActualizarPost`                     |
-| `DELETE` | `/posts/:id`          | Eliminar un post                      | `validarPostId`                                              |
-| `POST`   | `/posts/:id/tags`     | Vincular un tag a un post             | `validarPostId`, `validarTagIdEnPost`                        |
-| `DELETE` | `/posts/:id/tags/:tagId` | Desvincular un tag de un post      | `validarPostId`, `validarTagId`                              |
+| Método   | Ruta                     | Descripción                              | Middlewares                                                  |
+| -------- | ------------------------ | ---------------------------------------- | ------------------------------------------------------------ |
+| `GET`    | `/posts`                 | Ver todos los posts                      | -                                                            |
+| `GET`    | `/posts/:id`             | Obtener un post por ID                   | `validarPostId`                                              |
+| `GET`    | `/posts/:id/post`        | Obtener posts de un usuario por ID       | `validarUsuarioId`                                           |
+| `GET`    | `/posts/tag/:tagId`      | Ver posts filtrados por tag              | `validarTagId`                                               |
+| `POST`   | `/posts`                 | Crear un post (acepta `tagIds` opcional) | `validarPost`, `validarUsuarioNickname`, `validarTagsEnPost` |
+| `PUT`    | `/posts/:id`             | Actualizar un post                       | `validarPostId`, `validarActualizarPost`                     |
+| `DELETE` | `/posts/:id`             | Eliminar un post                         | `validarPostId`                                              |
+| `POST`   | `/posts/:id/tags`        | Vincular un tag a un post                | `validarPostId`, `validarTagIdEnPost`                        |
+| `DELETE` | `/posts/:id/tags/:tagId` | Desvincular un tag de un post            | `validarPostId`, `validarTagId`                              |
 
 ### PostImage
 
@@ -243,20 +243,21 @@ El archivo `swagger.yaml` contiene la especificación OpenAPI 3.0 completa de to
 
 ## Seeders (datos de prueba)
 
-Los seeders se ejecutan en orden respetando las dependencias de claves foráneas:
+Los seeders generan datos masivos variados y se ejecutan en orden respetando las dependencias de claves foráneas:
 
-1. **Usuarios** — 5 usuarios de ejemplo
-2. **Seguidores** — Relaciones de seguimiento entre usuarios
-3. **Tags** — Tags de ejemplo
-4. **Posts** — Publicaciones asociadas a usuarios
-5. **Post_Images** — Imágenes asociadas a posts
-6. **PostTags** — Relación muchos a muchos entre posts y tags
-7. **Comentarios** — Comentarios en posts
+1. **Usuarios** — 50 usuarios con nombres y apellidos reales
+2. **Seguidores** — ~150 relaciones de seguimiento entre usuarios
+3. **Tags** — 20 tags variados (hermoso, campo, ciudad, playa, música, arte, etc.)
+4. **Posts** — 100 publicaciones con descripciones únicas, distribuidas entre los usuarios
+5. **Post_Images** — ~35 imágenes en posts seleccionados (fotos de Unsplash)
+6. **PostTags** — ~200 relaciones posts-tags (cada post tiene 1-4 tags)
 
 Ejecutar con:
 
 ```bash
 npm run seed
 ```
+
+> **Nota:** `npm run seed` elimina todos los datos existentes y los regenera desde cero usando `sync({ force: true })`.
 
 ---

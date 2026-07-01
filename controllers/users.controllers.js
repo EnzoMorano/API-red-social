@@ -149,7 +149,7 @@ const obtenerPublicaciones = async (req, res) => {
 
     const usuario = req.usuario;
     const publicaciones = await usuario.getPosts({
-      attributes: ["id", "descripcion", "fecha"],
+      attributes: ["id", "descripcion", "fecha", "createdAt"],
       include: [
         {
           model: User,
